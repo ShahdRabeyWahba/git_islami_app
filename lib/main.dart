@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:islami_app/Introduction_Screen.dart';
-import 'package:islami_app/Splash_Screen2.dart';
-import 'package:islami_app/home_screen.dart';
+import 'package:islami_app/Splash_Screen.dart';
+import 'package:islami_app/home/home_screen.dart';
+import 'package:islami_app/intro_screen.dart';
+import 'package:islami_app/utils/app_routes.dart';
+import 'package:islami_app/utils/app_theme.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -13,12 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: HomeScreen.routName,
+      initialRoute: AppRoutes.splashRoute,
       routes: {
-        HomeScreen.routName: (context) => HomeScreen(),
-        SplashScreen2.routName: (context) => SplashScreen2(),
-        IntroductionScreen.routeName: (context) => IntroductionScreen()
+        AppRoutes.homescreenRoute: (context) => HomeScreen(),
+        AppRoutes.introRoute: (context) => IntroScreen(),
+        AppRoutes.splashRoute: (context) => SplashScreen(),
       },
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.dark,
     );
   }
 }
