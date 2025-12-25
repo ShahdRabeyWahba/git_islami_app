@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:islami_app/home/quran/hadeth/hadeth_tab.dart';
-import 'package:islami_app/home/quran/hadeth/sebha/radio/radio_tab.dart';
-import 'package:islami_app/home/quran/hadeth/sebha/radio/time/time_tab.dart';
-import 'package:islami_app/home/quran/hadeth/sebha/sebha_tab.dart';
-import 'package:islami_app/home/quran/quran_tab.dart';
+import 'package:islami_app/quran/hadeth/hadeth_tab.dart';
+import 'package:islami_app/quran/hadeth/sebha/radio/radio_tab.dart';
+import 'package:islami_app/quran/hadeth/sebha/radio/time/time_tab.dart';
+import 'package:islami_app/quran/hadeth/sebha/sebha_tab.dart';
+import 'package:islami_app/quran/quran_tab.dart';
 import 'package:islami_app/utils/App_Colors.dart';
 import 'package:islami_app/utils/app_assets.dart';
 

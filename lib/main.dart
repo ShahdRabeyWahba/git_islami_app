@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islami_app/Splash_Screen.dart';
+import 'package:islami_app/details/sura_details_screen.dart';
 import 'package:islami_app/home/home_screen.dart';
 import 'package:islami_app/intro_screen.dart';
 import 'package:islami_app/utils/app_routes.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.homescreenRoute: (context) => HomeScreen(),
         AppRoutes.introRoute: (context) => IntroScreen(),
         AppRoutes.splashRoute: (context) => SplashScreen(),
+        AppRoutes.suraDetailsScreenRoute: (context) => SuraDetailsScreen(),
       },
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,

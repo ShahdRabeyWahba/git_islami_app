@@ -16,4 +16,9 @@ class AppAssets {
   static const String iconTimeSelected = 'assets/images/time_selected.png';
   static const String logo = 'assets/images/logo.png';
   static const String quranSearch = 'assets/images/quran-search.png';
+  static const String mostRecentImage = 'assets/images/img_most_recent.png';
+  static const String vectorImage = 'assets/images/vector.png';
+  static const String leftImage = 'assets/images/img_left_corner.png';
+  static const String rightImage = 'assets/images/img_right_corner.png';
+  static const String mosqueImage = 'assets/images/img_bottom_decoration.png';
 }
