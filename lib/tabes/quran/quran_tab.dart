@@ -56,32 +56,6 @@ class QuranTap extends StatelessWidget {
                         Text('Al-Anbiya', style: AppStyles.bold24Dark),
                         Text('الأنبياء', style: AppStyles.bold24Dark),
                         Text('112 Verses', style: AppStyles.bold14Dark),
-                        Text('Sura List', style: AppStyles.bold16White),
-                        Expanded(
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  //todo: navigate to sura details screen
-                                  Navigator.of(context).pushNamed(
-                                    AppRoutes.suraDetailsScreenRoute,
-                                    arguments: index,
-                                  );
-                                },
-                                child: SuraItemWidget(index: index),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return Divider(
-                                color: AppColors.whiteColor,
-                                thickness: 2,
-                                indent: width * 0.06,
-                                endIndent: width * 0.06,
-                              );
-                            },
-                            itemCount: QuranResources.versesNumberList.length,
-                          ),
-                        ),
                       ],
                     ),
                     Image.asset(AppAssets.mostRecentImage),
@@ -93,6 +67,31 @@ class QuranTap extends StatelessWidget {
               return SizedBox(width: width * 0.04);
             },
             itemCount: 10,
+          ),
+        ),
+        Text('Sura List', style: AppStyles.bold16White),
+        Expanded(
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    AppRoutes.suraDetailsScreen1Route,
+                    arguments: index,
+                  );
+                },
+                child: SuraItemWidget(index: index),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Divider(
+                color: AppColors.whiteColor,
+                thickness: 2,
+                indent: width * 0.06,
+                endIndent: width * 0.06,
+              );
+            },
+            itemCount: QuranResources.versesNumberList.length,
           ),
         ),
       ],

@@ -15,27 +15,39 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, IntroScreen.routName);
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, IntroScreen.routName);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Image.asset('assets/images/splash.png', width: 200, height: 200),
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.black,
-        height: 80,
-        child: Center(
-          child: Image.asset(
-            'assets/images/logo_image.png',
-            width: 60,
-            height: 60,
+      body: Stack(
+        children: [
+          Center(
+            child: Image.asset(
+              'assets/images/splash.png',
+              width: size.width * 0.8,
+              fit: BoxFit.contain,
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'assets/images/logo_image.png',
+                width: size.width * 0.25,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
