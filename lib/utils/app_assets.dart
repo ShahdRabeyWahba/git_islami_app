@@ -21,4 +21,10 @@ class AppAssets {
   static const String leftImage = 'assets/images/img_left_corner.png';
   static const String rightImage = 'assets/images/img_right_corner.png';
   static const String mosqueImage = 'assets/images/img_bottom_decoration.png';
+  static const String suraDetailsBg = 'assets/images/sura_details_bg.png';
+  static const String rightCorner = 'assets/images/right_corner.png';
+  static const String leftCorner = 'assets/images/left_corner.png';
+  static const String mosque2Bg = 'assets/images/Mosque-02 2.png';
+  static const String hadethBackGround =
+      'assets/images/HadithCardBackGround 1.png';
 }
