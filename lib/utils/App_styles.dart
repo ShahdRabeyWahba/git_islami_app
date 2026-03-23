@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:islami_app/utils/App_Colors.dart';
+import 'package:islami_app/utils/app_colors.dart';
 
 class AppStyles {
   static TextStyle bold16White = GoogleFonts.elMessiri(
@@ -42,5 +42,10 @@ class AppStyles {
     fontSize: 14,
     fontWeight: FontWeight.bold,
     color: AppColors.darkColor,
+  );
+  static TextStyle bold24White = GoogleFonts.elMessiri(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: AppColors.whiteColor,
   );
 }

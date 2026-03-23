@@ -38,6 +38,14 @@ dependencies:
   introduction_screen: ^4.0.0
   google_fonts: ^6.3.3
   carousel_slider: ^5.1.1
+  shared_preferences: ^2.5.4
+  provider: ^6.1.5+1
+  audioplayers: ^6.5.1
+  concentric_transition: ^1.0.3
+  flutter_animate: ^4.5.2
+  http: ^1.6.0
+
+
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islami_app/model/quran_resources.dart';
-import 'package:islami_app/utils/App_styles.dart';
 import 'package:islami_app/utils/app_assets.dart';
+import 'package:islami_app/utils/app_styles.dart';
 
 class SuraItemWidget extends StatelessWidget {
   final int index;
@@ -11,15 +11,18 @@ class SuraItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
     return Row(
-      spacing: width * 0.06,
+      spacing: width * 0.03, // Tighter spacing
       children: [
         Stack(
-          alignment: AlignmentGeometry.center,
+          alignment: Alignment.center,
           children: [
-            Image.asset(AppAssets.vectorImage),
-            Text('${index + 1}', style: AppStyles.bold20White),
+            SizedBox(
+              height: 45, // Smaller vector icon
+              child: Image.asset(AppAssets.vectorImage, fit: BoxFit.contain),
+            ),
+            Text('${index + 1}', style: AppStyles.bold16White),
+            // Smaller index font
           ],
         ),
         Expanded(
@@ -28,18 +31,19 @@ class SuraItemWidget extends StatelessWidget {
             children: [
               Text(
                 QuranResources.QuranEnglishList[index],
-                style: AppStyles.bold20White,
+                style: AppStyles.bold16White, // Smaller title font
               ),
               Text(
-                '${QuranResources.versesNumberList[index]}verses',
-                style: AppStyles.bold14White,
-              ),
-              Text(
-                QuranResources.QuranArabicList[index],
-                style: AppStyles.bold20White,
+                '${QuranResources.versesNumberList[index]} Verses',
+                style: AppStyles.bold14White.copyWith(
+                    fontSize: 12), // Smaller verse count
               ),
             ],
           ),
+        ),
+        Text(
+          QuranResources.QuranArabicList[index],
+          style: AppStyles.bold16White, // Smaller Arabic title font
         ),
       ],
     );

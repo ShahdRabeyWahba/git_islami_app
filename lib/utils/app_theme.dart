@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:islami_app/utils/App_Colors.dart';
+import 'package:islami_app/utils/app_colors.dart';
 
 class AppTheme {
   static final ThemeData darkTheme = ThemeData(
-    scaffoldBackgroundColor: AppColors.transparentColor,
+    scaffoldBackgroundColor: AppColors.darkColor,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.blackColor,
       centerTitle: true,

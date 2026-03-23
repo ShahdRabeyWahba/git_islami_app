@@ -1,9 +1,9 @@
 class AppAssets {
-  static const String QuranBg = 'assets/images/quran_Bg.png';
-  static const String HadethBg = 'assets/images/hadeth_bg.png';
-  static const String SebhaBg = 'assets/images/sebha_bg.png';
-  static const String RadioBg = 'assets/images/radio_bg.png';
-  static const String TimeBg = 'assets/images/time_bg.png';
+  static const String quranBg = 'assets/images/quran_Bg.png';
+  static const String hadethBg = 'assets/images/hadeth_bg.png';
+  static const String sebhaBg = 'assets/images/sebha_bg.png';
+  static const String radioBg = 'assets/images/radio_bg.png';
+  static const String timeBg = 'assets/images/time_bg.png';
   static const String iconQuran = 'assets/images/Icon_quran.png';
   static const String iconQuranSelected = 'assets/images/quran_selected.png';
   static const String iconHadeth = 'assets/images/Icon_hadeth.png';
@@ -24,7 +24,23 @@ class AppAssets {
   static const String suraDetailsBg = 'assets/images/sura_details_bg.png';
   static const String rightCorner = 'assets/images/right_corner.png';
   static const String leftCorner = 'assets/images/left_corner.png';
-  static const String mosque2Bg = 'assets/images/Mosque-02 2.png';
-  static const String hadethBackGround =
-      'assets/images/HadithCardBackGround 1.png';
+  static const String mosque2Bg = 'assets/images/mosque_bg_02.png';
+  static const String hadethBackGround = 'assets/images/hadith_card_bg.png';
+  static const String sebhaBody = 'assets/images/SebhaBody.png';
+  static const String sebhaHead = 'assets/images/Group 37.png';
+  static const String splashLogo = 'assets/images/splash.png';
+  static const String logoImage = 'assets/images/logo_image.png';
+
+  // Frames (Onboarding)
+  static const String frame1 = 'assets/images/Frame1.png';
+  static const String frame2 = 'assets/images/Frame2.png';
+  static const String frame3 = 'assets/images/Frame3.png';
+  static const String frame4 = 'assets/images/Frame4.png';
+  static const String frame5 = 'assets/images/Frame5.png';
+
+  // Additional Icons
+  static const String bellIcon = 'assets/images/bell-icon.png';
+  static const String commentBubbleIcon =
+      'assets/images/comment-bubble-icon.png';
+  static const String rectangle = 'assets/images/Rectangle.png';
 }

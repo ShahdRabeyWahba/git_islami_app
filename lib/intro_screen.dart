@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:islami_app/home/home_screen.dart';
-import 'package:islami_app/utils/App_Colors.dart';
+import 'package:islami_app/utils/app_colors.dart';
 
 class IntroScreen extends StatelessWidget {
   static const String routName = 'intro_screen';
@@ -16,17 +16,22 @@ class IntroScreen extends StatelessWidget {
         backgroundColor: AppColors.darkColor,
         elevation: 0,
         centerTitle: true,
+        titleSpacing: 0,
         toolbarHeight: MediaQuery
             .of(context)
             .size
-            .height * 1.92,
-        title: Image.asset(
-          'assets/images/logo.png',
-          fit: BoxFit.contain,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 1.92,
+            .height * 0.25,
+        title: null,
+        flexibleSpace: SafeArea(
+          child: Image.asset(
+            'assets/images/logo.png',
+            fit: BoxFit.contain,
+            width: double.infinity,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.25,
+          ),
         ),
       ),
       body: IntroductionScreen(
@@ -34,202 +39,100 @@ class IntroScreen extends StatelessWidget {
         showNextButton: true,
         showBackButton: true,
         showDoneButton: true,
-
+        dotsDecorator: DotsDecorator(
+          size: const Size.square(10.0),
+          activeSize: const Size(20.0, 10.0),
+          activeColor: AppColors.primaryColor,
+          color: Colors.grey,
+          spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+          activeShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0)),
+        ),
         next: Text(
           "Next",
           style: TextStyle(
-            color: AppColors.goldColor,
+            color: AppColors.primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
         back: Text(
           "Back",
           style: TextStyle(
-            color: AppColors.goldColor,
+            color: AppColors.primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
         done: Text(
           "Finish",
           style: TextStyle(
-            color: AppColors.goldColor,
+            color: AppColors.primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
-
         onDone: () {
           _onIntroEnd(context);
         },
-
         pages: [
-          PageViewModel(
-            title: "",
-            bodyWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImage('assets/images/Frame1.png', context),
-                const SizedBox(height: 20),
-                const Text(
-                  "Welcome To Islami App",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "We Are Very Excited To Have You In Our Community",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Choose Theme",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            decoration: pageDecoration,
+          _buildPage(
+            title: "Welcome To Islami App",
+            body: "We Are Very Excited To Have You In Our Community",
+            image: 'assets/images/Frame1.png',
+            context: context,
           ),
-          PageViewModel(
-            title: "",
-            bodyWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImage('assets/images/Frame2.png', context),
-                const SizedBox(height: 20),
-                const Text(
-                  "Reading the Quran",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Read, and your Lord is the Most Generous",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-                ),
-              ],
-            ),
-            decoration: pageDecoration,
+          _buildPage(
+            title: "Reading the Quran",
+            body: "Read, and your Lord is the Most Generous",
+            image: 'assets/images/Frame2.png',
+            context: context,
           ),
-          PageViewModel(
-            title: "",
-            bodyWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImage('assets/images/Frame3.png', context),
-                const SizedBox(height: 20),
-                const Text(
-                  "Bearish",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Praise the name of your Lord, the Most High",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-                ),
-              ],
-            ),
-            decoration: pageDecoration,
+          _buildPage(
+            title: "Bearish",
+            body: "Praise the name of your Lord, the Most High",
+            image: 'assets/images/Frame4.png',
+            context: context,
           ),
-          PageViewModel(
-            title: "",
-            bodyWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImage('assets/images/Frame4.png', context),
-                const SizedBox(height: 20),
-                const Text(
-                  "Bearish",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Praise the name of your Lord, the Most High",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-                ),
-              ],
-            ),
-            decoration: pageDecoration,
-          ),
-          PageViewModel(
-            title: "",
-            bodyWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImage('assets/images/Frame5.png', context),
-                const SizedBox(height: 20),
-                const Text(
-                  "Holy Quran Radio",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "You can listen to the Holy Quran Radio through the application for free and easily",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
-                ),
-              ],
-            ),
-            decoration: pageDecoration,
+          _buildPage(
+            title: "Holy Quran Radio",
+            body: "You can listen to the Holy Quran Radio through the application for free and easily",
+            image: 'assets/images/Frame5.png',
+            context: context,
           ),
         ],
       ),
+    );
+  }
+
+  static PageViewModel _buildPage({
+    required String title,
+    required String body,
+    required String image,
+    required BuildContext context,
+  }) {
+    return PageViewModel(
+      title: "",
+      bodyWidget: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildImage(image, context),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            body,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: AppColors.primaryColor),
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+      decoration: pageDecoration,
     );
   }
 
@@ -237,9 +140,8 @@ class IntroScreen extends StatelessWidget {
     var size = MediaQuery
         .of(context)
         .size;
-    return Image.asset(assetName, width: size.width,
-        height: size.height * 0.4,
-        fit: BoxFit.contain);
+    return Image.asset(assetName,
+        width: size.width, height: size.height * 0.30, fit: BoxFit.contain);
   }
 
   static const PageDecoration pageDecoration = PageDecoration(

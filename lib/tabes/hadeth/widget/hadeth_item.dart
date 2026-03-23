@@ -1,29 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:islami_app/model/hadeth_details_args.dart';
 import 'package:islami_app/tabes/hadeth/hadeth.dart';
-import 'package:islami_app/utils/App_Colors.dart';
-import 'package:islami_app/utils/App_styles.dart';
 import 'package:islami_app/utils/app_assets.dart';
+import 'package:islami_app/utils/app_colors.dart';
 import 'package:islami_app/utils/app_routes.dart';
+import 'package:islami_app/utils/app_styles.dart';
 
-class HadethItem extends StatefulWidget {
+class HadethItem extends StatelessWidget {
+  final Hadeth hadeth;
   final int index;
 
-  HadethItem({super.key, required this.index});
+  const HadethItem({super.key, required this.hadeth, required this.index});
 
-  @override
-  State<HadethItem> createState() => _HadethItemState();
-}
-
-class _HadethItemState extends State<HadethItem> {
-  Hadeth? hadeth;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    loadHadethFile(widget.index);
+  String _getArabicOrder(int index) {
+    const arabicOrders = [
+      'الأول',
+      'الثاني',
+      'الثالث',
+      'الرابع',
+      'الخامس',
+      'السادس',
+      'السابع',
+      'الثامن',
+      'التاسع',
+      'العاشر',
+      'الحادي عشر',
+      'الثاني عشر',
+      'الثالث عشر',
+      'الرابع عشر',
+      'الخامس عشر',
+      'السادس عشر',
+      'السابع عشر',
+      'الثامن عشر',
+      'التاسع عشر',
+      'العشرون',
+      'الحادي والعشرون',
+      'الثاني والعشرون',
+      'الثالث والعشرون',
+      'الرابع والعشرون',
+      'الخامس والعشرون',
+      'السادس والعشرون',
+      'السابع والعشرون',
+      'الثامن والعشرون',
+      'التاسع والعشرون',
+      'الثلاثون',
+      'الحادي والثلاثون',
+      'الثاني والثلاثون',
+      'الثالث والثلاثون',
+      'الرابع والثلاثون',
+      'الخامس والثلاثون',
+      'السادس والثلاثون',
+      'السابع والثلاثون',
+      'الثامن والثلاثون',
+      'التاسع والثلاثون',
+      'الأربعون',
+      'الحادي والأربعون',
+      'الثاني والأربعون',
+      'الثالث والأربعون',
+      'الرابع والأربعون',
+      'الخامس والأربعون',
+      'السادس والأربعون',
+      'السابع والأربعون',
+      'الثامن والأربعون',
+      'التاسع والأربعون',
+      'الخمسون',
+    ];
+    return (index > 0 && index <= arabicOrders.length)
+        ? arabicOrders[index - 1]
+        : '$index';
   }
 
   @override
@@ -32,85 +76,118 @@ class _HadethItemState extends State<HadethItem> {
     var width = MediaQuery.of(context).size.width;
 
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        image: DecorationImage(image: AssetImage(AppAssets.hadethBackGround)),
-        color: AppColors.primaryColor,
-      ),
-      child: hadeth == null
-          ? Center(
-              child: CircularProgressIndicator(
-                backgroundColor: AppColors.blackColor,
-              ),
-            )
-          : Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.04,
-                    vertical: height * 0.02,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-                        child: Expanded(
-                          child: Text(
-                            hadeth?.title ?? '',
-                            textAlign: TextAlign.center,
-                            style: AppStyles.bold24Dark,
-                          ),
-                        ),
-                      ),
-                      Image.asset(AppAssets.leftCorner, width: width * 0.16),
-                      Image.asset(AppAssets.rightCorner, width: width * 0.16),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-                      child: InkWell(
-                        onTap: () {
-                          //todo: navigate to hadeth details screen
-                          Navigator.of(context).pushNamed(
-                            AppRoutes.hadethDetailsScreen1Route,
-                            arguments: HadethDetailsArgs(
-                              hadeth: hadeth!,
-                              index: widget.index,
-                            ),
-                          );
-                        },
-                        child: Text(
-                          hadeth?.content ?? '',
-                          textAlign: TextAlign.center,
-                          style: AppStyles.bold16dark,
-                        ),
+      width: double.infinity,
+      height: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Opacity(
+                      opacity: 0.4,
+                      child: Image.asset(
+                        AppAssets.hadethBackGround,
+                        width: width * 0.7,
                       ),
                     ),
                   ),
-                ),
-                Image.asset(
-                  AppAssets.mosque2Bg,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                ),
-              ],
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Image.asset(
+                      AppAssets.mosque2Bg,
+                      width: double.infinity,
+                      height: height * 0.10,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: width * 0.04,
+                          right: width * 0.04,
+                          bottom: height * 0.08),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 35),
+                          Text(
+                            'الحديث ${_getArabicOrder(index + 1)}',
+                            style: AppStyles.bold24Dark.copyWith(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.04),
+                            child: Text(
+                              hadeth.title,
+                              textAlign: TextAlign.center,
+                              style: AppStyles.bold16dark.copyWith(
+                                  color: AppColors.blackColor, fontSize: 18),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    AppRoutes.hadethDetailsScreen1Route,
+                                    arguments: HadethDetailsArgs(
+                                      hadeth: hadeth,
+                                      index: index + 1,
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  hadeth.content,
+                                  textAlign: TextAlign.center,
+                                  style: AppStyles.bold16dark.copyWith(
+                                      fontSize: 22,
+                                      height: 1.6,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Image.asset(
+              AppAssets.leftImage,
+              width: 75,
+              color: AppColors.blackColor,
+            ),
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Image.asset(
+              AppAssets.rightImage,
+              width: 75,
+              color: AppColors.blackColor,
+            ),
+          ),
+        ],
+      ),
     );
-  }
-
-  void loadHadethFile(int index) async {
-    String fileContent = await rootBundle.loadString(
-      'assets/files/hadeth/h$index',
-    );
-    int fileContentIndex = fileContent.indexOf('\n');
-    String title = fileContent.substring(0, fileContentIndex);
-    String content = fileContent.substring(fileContentIndex + 1);
-    hadeth = Hadeth(title: title, content: content);
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {});
   }
 }

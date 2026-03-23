@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:islami_app/details/widget/sura_content1.dart';
+import 'package:islami_app/details/widget/sura_content.dart';
 import 'package:islami_app/model/quran_resources.dart';
-import 'package:islami_app/utils/App_Colors.dart';
-import 'package:islami_app/utils/App_styles.dart';
 import 'package:islami_app/utils/app_assets.dart';
+import 'package:islami_app/utils/app_colors.dart';
+import 'package:islami_app/utils/app_styles.dart';
 
 class SuraDetailsScreen1 extends StatefulWidget {
   const SuraDetailsScreen1({super.key});
@@ -14,21 +14,30 @@ class SuraDetailsScreen1 extends StatefulWidget {
 }
 
 class _SuraDetailsScreen1State extends State<SuraDetailsScreen1> {
-  List<String> verses = [];
-  String suraContent = '';
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     int index = ModalRoute.of(context)?.settings.arguments as int;
-    if (suraContent.isEmpty) {
-      loadSuraFile(index);
-    }
+
     return Scaffold(
-      backgroundColor: AppColors.blackColor,
+      backgroundColor: const Color(0xFF202020), // Matching Hadeth Details
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.primaryColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           QuranResources.QuranEnglishList[index],
           style: AppStyles.bold20primary,
@@ -37,43 +46,82 @@ class _SuraDetailsScreen1State extends State<SuraDetailsScreen1> {
       body: Stack(
         alignment: AlignmentGeometry.center,
         children: [
-          Image.asset(
-            AppAssets.suraDetailsBg,
-            width: double.infinity,
-            fit: BoxFit.fill,
+          Positioned(
+            top: 0,
+            left: 0,
+            child: Image.asset(AppAssets.leftImage),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Image.asset(AppAssets.rightImage),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              AppAssets.mosqueImage,
+              fit: BoxFit.fitWidth,
+            ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: height * 0.02),
+            padding: EdgeInsets.symmetric(horizontal: width * 0.06),
             child: Column(
-              spacing: height * 0.04,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(AppAssets.leftImage),
-                    Text(
-                      QuranResources.QuranArabicList[index],
-                      style: AppStyles.bold24primary,
-                    ),
-                    Image.asset(AppAssets.rightImage),
-                    Text(
-                      QuranResources.QuranEnglishList[index],
-                      style: AppStyles.bold24primary,
-                    ),
-                  ],
+                SizedBox(height: height * 0.02),
+                Text(
+                  QuranResources.QuranArabicList[index],
+                  style: AppStyles.bold24primary,
                 ),
+                SizedBox(height: height * 0.04), // Increased distance
                 Expanded(
-                  child: suraContent.isEmpty
-                      ? Center(
+                  child: FutureBuilder<List<String>>(
+                    future: loadSuraFile(index),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
                           child: CircularProgressIndicator(
                             color: AppColors.primaryColor,
                           ),
-                        )
-                      : SingleChildScrollView(
-                          child: SuraContent1(content: suraContent),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            'Error loading Sura',
+                            style: AppStyles.bold20primary,
+                          ),
+                        );
+                      }
+                      return RawScrollbar(
+                        controller: _scrollController,
+                        thumbVisibility: true,
+                        thickness: 6,
+                        radius: const Radius.circular(20),
+                        thumbColor: AppColors.blackColor,
+                        child: SingleChildScrollView(
+                          controller: _scrollController,
+                          child: Column(
+                            children: (snapshot.data ?? [])
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                              int index = entry.key;
+                              String verse = entry.value;
+                              return SuraContent(
+                                content: verse,
+                                index: index,
+                                verseIndex: index + 1,
+                              );
+                            }).toList(),
+                          ),
                         ),
+                      );
+                    },
+                  ),
                 ),
-                SizedBox(height: height * 0.08),
+                SizedBox(height: height * 0.02),
               ],
             ),
           ),
@@ -82,18 +130,32 @@ class _SuraDetailsScreen1State extends State<SuraDetailsScreen1> {
     );
   }
 
-  void loadSuraFile(int index) async {
+  Future<List<String>> loadSuraFile(int index) async {
     String fileContent = await rootBundle.loadString(
       'assets/files/quran/${index + 1}.text',
     );
-    List<String> lines = fileContent.split('\n');
-    verses = lines;
-    for (int i = 0; i < lines.length; i++) {
-      lines[i] += '[${i + 1}]';
-    }
-    suraContent = lines.join();
 
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {});
+    // First try splitting by newlines
+    List<String> lines = fileContent.split('\n');
+    List<String> verses = lines
+        .map((l) => l.trim())
+        .where((l) => l.isNotEmpty)
+        .toList();
+
+    // If only 1 line was found, the whole sura is in one line
+    // Split by verse number pattern like (1), (2), ... (286)
+    if (verses.length <= 1 && verses.isNotEmpty) {
+      String singleLine = verses[0];
+      // Split using regex: keep the trailing verse number with the verse text
+      final RegExp versePattern = RegExp(r'(?=\(\d+\)\s*)');
+      List<String> parts = singleLine.split(versePattern);
+      verses = parts
+          .map((p) => p.trim())
+          .where((p) => p.isNotEmpty)
+          .toList();
+    }
+
+    await Future.delayed(const Duration(seconds: 1));
+    return verses;
   }
 }

@@ -42,3 +42,8 @@ android {
 flutter {
     source = "../.."
 }
+
+// Suppress obsolete Java source/target version warnings from Flutter's internal plugins
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-Xlint:-options")
+}

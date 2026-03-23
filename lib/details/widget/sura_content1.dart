@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:islami_app/utils/App_styles.dart';
+import 'package:islami_app/utils/app_styles.dart';
 
 class SuraContent1 extends StatelessWidget {
   const SuraContent1({super.key, required this.content});

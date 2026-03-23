@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islami_app/details/widget/sura_content.dart';
 import 'package:islami_app/model/quran_resources.dart';
-import 'package:islami_app/utils/App_Colors.dart';
-import 'package:islami_app/utils/App_styles.dart';
 import 'package:islami_app/utils/app_assets.dart';
+import 'package:islami_app/utils/app_colors.dart';
+import 'package:islami_app/utils/app_styles.dart';
 
 class SuraDetailsScreen extends StatefulWidget {
   const SuraDetailsScreen({super.key});
@@ -15,6 +15,13 @@ class SuraDetailsScreen extends StatefulWidget {
 
 class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
   List<String> verses = [];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +39,19 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
     }
     return Stack(
       children: [
-        Image.asset(
-          AppAssets.suraDetailsBg,
-          width: double.infinity,
-          fit: BoxFit.fill,
+        Positioned.fill(
+          child: Image.asset(
+            AppAssets.suraDetailsBg,
+            fit: BoxFit.fill,
+          ),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             centerTitle: true,
+            iconTheme: IconThemeData(
+                color: AppColors.primaryColor
+            ),
             title: Text(
               QuranResources.QuranEnglishList[index],
               style: AppStyles.bold20primary,
@@ -56,9 +67,12 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(AppAssets.leftImage),
-                    Text(
-                      QuranResources.QuranArabicList[index],
-                      style: AppStyles.bold24primary,
+                    Flexible(
+                      child: Text(
+                        QuranResources.QuranArabicList[index],
+                        style: AppStyles.bold24primary,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     Image.asset(AppAssets.rightImage),
                   ],
@@ -68,22 +82,37 @@ class _SuraDetailsScreenState extends State<SuraDetailsScreen> {
                         ? Center(
                         child: CircularProgressIndicator(
                             color: AppColors.primaryColor))
-                        : ListView.separated(
-                      padding: EdgeInsets.only(top: height * 0.02),
-                      itemBuilder: (context, index) {
-                        return SuraContent(
-                          content: verses[index],
-                          index: index,
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(
-                          height: height * 0.02,
-                        );
-                      },
-                      itemCount: verses.length,
+                        : RawScrollbar(
+                      controller: _scrollController,
+                      thumbVisibility: true,
+                      thickness: 6,
+                      radius: const Radius.circular(20),
+                      thumbColor: AppColors.darkColor,
+                      child: ListView.separated(
+                        controller: _scrollController,
+                        padding: EdgeInsets.only(
+                            top: height * 0.02, right: width * 0.02),
+                        itemBuilder: (context, index) {
+                          return SuraContent(
+                            index: index,
+                            content: verses[index],
+                            verseIndex: index + 1,
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                            height: height * 0.02,
+                          );
+                        },
+                        itemCount: verses.length,
+                      ),
                     )),
-                Image.asset(AppAssets.mosqueImage),
+                Image.asset(
+                  AppAssets.mosqueImage,
+                  height: height * 0.2,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
               ],
             ),
           ),

@@ -4,8 +4,9 @@ import 'package:islami_app/tabes/quran/quran_tab.dart';
 import 'package:islami_app/tabes/radio/radio_tab.dart';
 import 'package:islami_app/tabes/sebha/sebha_tab.dart';
 import 'package:islami_app/tabes/time/time_tab.dart';
-import 'package:islami_app/utils/App_Colors.dart';
 import 'package:islami_app/utils/app_assets.dart';
+import 'package:islami_app/utils/app_colors.dart';
+import 'package:islami_app/utils/app_styles.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routName = 'home_screen';
@@ -18,82 +19,104 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
-  List<String> backgroundImages = [
-    AppAssets.QuranBg,
-    AppAssets.HadethBg,
-    AppAssets.SebhaBg,
-    AppAssets.RadioBg,
-    AppAssets.TimeBg,
+  late PageController _pageController;
+
+  final List<String> backgroundImages = [
+    AppAssets.quranBg,
+    AppAssets.hadethBg,
+    AppAssets.sebhaBg,
+    AppAssets.radioBg,
+    AppAssets.timeBg,
   ];
-  List<Widget> tabsList = [
-    QuranTap(),
-    HadethTab(),
-    RadioTab(),
-    SebhaTab(),
-    TimeTab(),
+
+  final List<Widget> tabsList = [
+    const QuranTab(),
+    const HadethTab(),
+    const SebhaTab(),
+    const RadioTab(),
+    const TimeTab(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: selectedIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Stack(
       children: [
+        // Responsive Background Image
         Image.asset(
           backgroundImages[selectedIndex],
           width: double.infinity,
           height: double.infinity,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
+
         Scaffold(
           backgroundColor: Colors.transparent,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
-            onTap: (index) {
-              selectedIndex = index;
-              setState(() {});
-            },
+            showSelectedLabels: true,
+            showUnselectedLabels: false,
             selectedItemColor: AppColors.whiteColor,
+            selectedLabelStyle: AppStyles.bold14White,
+            elevation: 0,
             type: BottomNavigationBarType.fixed,
             backgroundColor: AppColors.primaryColor,
+            onTap: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            },
             items: [
               buildBottomNavigationBarItem(
-                index: 0,
-                iconName: AppAssets.iconQuran,
-                iconSelectedName: AppAssets.iconQuranSelected,
-                label: 'Quran',
-              ),
+                  0, AppAssets.iconQuran, AppAssets.iconQuranSelected, 'Quran'),
               buildBottomNavigationBarItem(
-                index: 1,
-                iconName: AppAssets.iconHadeth,
-                iconSelectedName: AppAssets.iconHadethSelected,
-                label: 'Hadeth',
-              ),
+                  1, AppAssets.iconHadeth, AppAssets.iconHadethSelected,
+                  'Hadeth'),
               buildBottomNavigationBarItem(
-                index: 2,
-                iconName: AppAssets.iconSebha,
-                iconSelectedName: AppAssets.iconSebhaSelected,
-                label: 'Sebha',
-              ),
+                  2, AppAssets.iconSebha, AppAssets.iconSebhaSelected, 'Sebha'),
               buildBottomNavigationBarItem(
-                index: 3,
-                iconName: AppAssets.iconRadio,
-                iconSelectedName: AppAssets.iconRadioSelected,
-                label: 'Radio',
-              ),
+                  3, AppAssets.iconRadio, AppAssets.iconRadioSelected, 'Radio'),
               buildBottomNavigationBarItem(
-                index: 4,
-                iconName: AppAssets.iconTime,
-                iconSelectedName: AppAssets.iconTimeSelected,
-                label: 'Time',
-              ),
+                  4, AppAssets.iconTime, AppAssets.iconTimeSelected, 'Time'),
             ],
           ),
           body: Column(
-            spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(AppAssets.logo, height: height * 0.16),
-              Expanded(child: tabsList[selectedIndex]),
+              Container(
+                margin: const EdgeInsets.only(top: 15),
+                child: Image.asset(AppAssets.logo, height: height * 0.18),
+              ),
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    if (selectedIndex != index) {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    }
+                  },
+                  children: tabsList,
+                ),
+              ),
             ],
           ),
         ),
@@ -101,14 +124,28 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  BottomNavigationBarItem buildBottomNavigationBarItem({
-    required String iconName,
-    required String label,
-    required String iconSelectedName,
-    required int index,
-  }) {
+  BottomNavigationBarItem buildBottomNavigationBarItem(int index, String icon,
+      String activeIcon, String label) {
+    bool isSelected = selectedIndex == index;
     return BottomNavigationBarItem(
-      icon: Image.asset(selectedIndex == index ? iconSelectedName : iconName),
+      icon: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: 30,
+        // Shorter Box as requested
+        width: 65,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF202020).withOpacity(0.5) : Colors
+              .transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Image.asset(
+          icon,
+          height: 33, // Slightly smaller icon (from 40 to 33)
+          fit: BoxFit.contain,
+          color: AppColors.blackColor,
+        ),
+      ),
       label: label,
     );
   }
